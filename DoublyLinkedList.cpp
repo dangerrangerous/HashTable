@@ -24,9 +24,18 @@ previous = previous->next;
 next = nodePtr;
 }
 */
+/*
 Node::Node(int inValue)
 {
 	data = inValue;
+	previous = nullptr;
+	next = nullptr;
+}
+*/
+Node::Node(int inData, int inKey)
+{
+	data = inData;
+	key = inKey;
 	previous = nullptr;
 	next = nullptr;
 }
@@ -77,19 +86,18 @@ void DoublyLinkedList::InitializeList()
 	DestroyList();
 } // end InitializeList
 
-void DoublyLinkedList::InsertFirst(int inValue)
+void DoublyLinkedList::InsertFirst(int inValue, int inKey)
 {
-	Node* newNode = new Node(inValue);
-
-	if (firstNode != nullptr)
-	{
-		firstNode->previous = newNode;
-		newNode->next = firstNode;
-		firstNode = newNode;
-	}
+	Node* newNode = new Node(inValue, inKey);
 
 	if (firstNode == nullptr)
 	{
+		firstNode = newNode;
+	}
+	else if (firstNode != nullptr)
+	{
+		firstNode->previous = newNode;
+		newNode->next = firstNode;
 		firstNode = newNode;
 	}
 
@@ -101,9 +109,9 @@ void DoublyLinkedList::InsertFirst(int inValue)
 	listLength++;
 } // end InsertFirst()
 
-void DoublyLinkedList::InsertLast(int inValue)
+void DoublyLinkedList::InsertLast(int inValue, int inKey)
 {
-	Node* newNode = new Node(inValue);
+	Node* newNode = new Node(inValue, inKey);
 
 	if (lastNode == nullptr)
 	{
@@ -178,7 +186,7 @@ void DoublyLinkedList::DeleteLast()
 	listLength--;
 } // end DeleteLast()
 
-void DoublyLinkedList::DeleteNode(int inValue)
+void DoublyLinkedList::DeleteNode(int inKey, int inValue)
 {
 	Node* temp = Find(inValue);
 
@@ -223,14 +231,14 @@ Node* DoublyLinkedList::Find(int searchValue)
 	return 0;
 } // end Find()
 
-void DoublyLinkedList::InsertNodeAfter(int node, int inValue)
+void DoublyLinkedList::InsertNodeAfter(int node, int inValue, int inKey)
 {
 	Node* temp = Find(node);
-	Node* newNode = new Node(inValue);
+	Node* newNode = new Node(inValue, inKey);
 
 	if (temp == lastNode)
 	{
-		InsertLast(inValue);
+		InsertLast(inKey, inValue);
 	}
 	else
 	{
@@ -242,14 +250,14 @@ void DoublyLinkedList::InsertNodeAfter(int node, int inValue)
 	listLength++;
 } // end InsertNodeAfter()
 
-void DoublyLinkedList::InsertNodeBefore(int node, int inValue)
+void DoublyLinkedList::InsertNodeBefore(int node,int inValue, int inKey)
 {
 	Node* temp = Find(node);
-	Node* newNode = new Node(inValue);
+	Node* newNode = new Node(inValue, inKey);
 
 	if (temp == firstNode)
 	{
-		InsertFirst(inValue);
+		InsertFirst(inKey, inValue);
 	}
 	else
 	{
@@ -292,7 +300,9 @@ void DoublyLinkedList::Display()
 	// doesn't exist eh?
 	while (current->next != nullptr)
 	{
-		cout << current->data << " ";
+		cout << current->key << " ";
 		current = current->next;
 	}
+	// output the last value
+	cout << current->key;
 }
